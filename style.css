@@ -25,17 +25,20 @@ body {
   line-height: 1.6;
   display: flex;
   justify-content: center;
+  /* Removemos o min-height fixo do body para evitar bugs no mobile */
   min-height: 100vh;
 }
 
-/* Container A4 simulado */
+/* Container A4 simulado (Desktop) */
 .terminal-wrapper {
   width: 210mm;
+  max-width: 100%; /* Garante que não quebre em telas menores que A4 */
   min-height: 297mm;
   background-color: var(--bg-color);
   display: grid;
   grid-template-columns: 32% 68%; /* Sidebar | Conteúdo */
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  margin: 0 auto;
 }
 
 /* --- SIDEBAR (Esquerda) --- */
@@ -64,7 +67,6 @@ aside {
   overflow: hidden;
 }
 
-/* Se você colocar uma imagem, ela preencherá o espaço */
 .avatar-placeholder img {
   width: 100%;
   height: 100%;
@@ -83,7 +85,7 @@ aside {
 
 .contact-item {
   margin-bottom: 12px;
-  word-wrap: break-word;
+  word-wrap: break-word; /* Evita quebra de layout com links longos */
 }
 
 .contact-label {
@@ -134,6 +136,7 @@ h1 {
   font-size: 28px;
   color: var(--accent-green);
   margin-bottom: 5px;
+  line-height: 1.2;
 }
 
 h1::before {
@@ -141,7 +144,6 @@ h1::before {
   color: var(--accent-purple);
 }
 
-/* Efeito de cursor piscando no título */
 h1::after {
   content: "_";
   animation: blink 1s step-end infinite;
@@ -204,6 +206,8 @@ h1::after {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  flex-wrap: wrap; /* Permite quebrar linha no mobile */
+  gap: 10px;
   margin-bottom: 5px;
 }
 
@@ -227,6 +231,7 @@ h1::after {
   background: #1f2428;
   padding: 2px 6px;
   border-radius: 4px;
+  white-space: nowrap; /* Evita que a data quebre de forma feia */
 }
 
 .job-desc {
@@ -258,19 +263,84 @@ h1::after {
   justify-content: space-between;
 }
 
-/* Ajustes para Impressão (Mantém o estilo Dark ao salvar em PDF) */
+/* --- MEDIA QUERIES (Mobile Optimization) --- */
+@media screen and (max-width: 768px) {
+  body {
+    /* Remove centralização no mobile para scroll natural */
+    display: block;
+    background-color: var(--sidebar-bg);
+  }
+
+  .terminal-wrapper {
+    width: 100%;
+    min-height: auto;
+    /* Muda para 1 coluna */
+    grid-template-columns: 1fr;
+    box-shadow: none;
+  }
+
+  /* Sidebar passa a ser o topo */
+  aside {
+    border-right: none;
+    border-bottom: 1px dashed var(--border-color);
+    padding: 20px;
+  }
+
+  /* Ajuste da imagem para não ficar gigante no mobile, se houver */
+  .avatar-placeholder {
+    max-width: 150px;
+    margin: 0 auto 20px auto;
+  }
+
+  main {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 24px; /* Título um pouco menor */
+  }
+
+  /* Ajuste para textos justificados ficarem melhor em telas pequenas */
+  .bio-text {
+    text-align: left;
+  }
+
+  .cmd-footer {
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+  }
+}
+
+/* --- ESTILOS DE IMPRESSÃO (Mantém o Layout A4) --- */
 @media print {
   body {
     margin: 0;
     background-color: #fff;
   }
   .terminal-wrapper {
-    width: 100%;
+    width: 100%; /* Ocupa a folha toda */
+    max-width: none;
     min-height: 100vh;
     box-shadow: none;
+    /* Restaura o Grid de 2 colunas na impressão, mesmo se estiver imprimindo do celular */
+    display: grid;
+    grid-template-columns: 32% 68%;
     background-color: var(--bg-color) !important;
     -webkit-print-color-adjust: exact;
   }
+
+  /* Garante que a sidebar volte a ter borda lateral e não inferior */
+  aside {
+    border-right: 1px solid var(--border-color);
+    border-bottom: none;
+    padding: 30px;
+  }
+
+  main {
+    padding: 40px;
+  }
+
   a {
     text-decoration: none;
     color: var(--accent-blue) !important;
