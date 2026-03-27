@@ -90,13 +90,24 @@ h1 {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 18px;
+  column-gap: 24px;
+  row-gap: 3px;
   font-size: 9pt;
   color: var(--color-text-light);
+  margin-top: 6px;
 }
 
 .contact-list li {
   white-space: nowrap;
+}
+
+@media print {
+  .contact-list {
+    display: block;
+  }
+  .contact-list li {
+    margin-bottom: 3px;
+  }
 }
 
 /* --- Seções --- */
@@ -205,12 +216,21 @@ article ul li {
 #idiomas ul {
   list-style: none;
   padding: 0;
-  display: flex;
-  gap: 32px;
 }
 
 #idiomas ul li {
   font-size: 10pt;
+  margin-bottom: 6px;
+  padding-left: 14px;
+  position: relative;
+}
+
+#idiomas ul li::before {
+  content: "\25AA";
+  color: var(--color-accent);
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 /* ============================================================
