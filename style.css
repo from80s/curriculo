@@ -105,6 +105,7 @@ h1 {
   .contact-list {
     display: block;
   }
+
   .contact-list li {
     margin-bottom: 3px;
   }
@@ -264,11 +265,11 @@ article ul li {
 
   section {
     margin-top: 16px;
-    page-break-inside: avoid;
+    page-break-inside: auto;
   }
 
   article {
-    page-break-inside: avoid;
+    page-break-inside: auto;
   }
 
   .skills-grid {
